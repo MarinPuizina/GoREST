@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -15,8 +16,11 @@ func main() {
 		log.Printf("Data=%s\n", d)
 	}
 
-	h2 := func(w http.ResponseWriter, _ *http.Request) {
-		io.WriteString(w, "Hello from handler func 2")
+	echoRequest := func(rw http.ResponseWriter, r *http.Request) {
+		log.Println("Reading request")
+		d, _ := ioutil.ReadAll(r.Body)
+
+		fmt.Fprintf(rw, "Hello %s", d)
 	}
 
 	userHandler := func(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +38,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", readRequest)
-	http.HandleFunc("/endpoint", h2)
+	http.HandleFunc("/echo", echoRequest)
 	http.HandleFunc("/user", userHandler)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
