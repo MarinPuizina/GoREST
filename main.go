@@ -2,13 +2,17 @@ package main
 
 import (
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
 
 func main() {
-	h1 := func(w http.ResponseWriter, _ *http.Request) {
-		io.WriteString(w, "Hello from handler func 1")
+	readRequest := func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Reading request")
+		d, _ := ioutil.ReadAll(r.Body)
+
+		log.Printf("Data=%s\n", d)
 	}
 
 	h2 := func(w http.ResponseWriter, _ *http.Request) {
@@ -29,7 +33,7 @@ func main() {
 		log.Println("Url param key is=" + string(key))
 	}
 
-	http.HandleFunc("/", h1)
+	http.HandleFunc("/", readRequest)
 	http.HandleFunc("/endpoint", h2)
 	http.HandleFunc("/user", userHandler)
 
