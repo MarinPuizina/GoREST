@@ -18,7 +18,11 @@ func main() {
 
 	echoRequest := func(rw http.ResponseWriter, r *http.Request) {
 		log.Println("Reading request")
-		d, _ := ioutil.ReadAll(r.Body)
+		d, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(rw, "Sorry, a bad request", http.StatusBadRequest)
+			return
+		}
 
 		fmt.Fprintf(rw, "Hello %s", d)
 	}
