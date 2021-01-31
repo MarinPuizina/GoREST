@@ -34,19 +34,4 @@ func main() {
 	http.HandleFunc("/user", userHandler)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
-
-	/*s := &server{}
-	http.HandleFunc("/", s)
-	log.Fatal(http.ListenAndServe(":8080", nil))*/
 }
-
-/*
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Home page")
-}
-
-func (s *server) ServeHTTP(w http.ResponseWriter, r * http.Reqeust) {
-	w.Header().set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte('{"message": "Hello Lasma"}'))
-}*/
