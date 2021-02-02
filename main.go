@@ -32,15 +32,25 @@ func main() {
 		log.Println("Url param key is=" + string(key))
 	}
 
+	// Specifing the logger
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	// Reference to the handler
 	hh := handlers.NewHello(l)
 
+	// Create a new serve mux
 	sm := http.NewServeMux()
+	// Register a handler on a serve mux
+	// And link it to our hh handler
 	sm.Handle("/echo", hh)
 
+	// Converting function to a handler type
+	// Registering it to the default serve mux
 	http.HandleFunc("/", readRequest)
 	http.HandleFunc("/user", userHandler)
 
+	// if we don't specify handler it will use default serve mux
 	//log.Fatal(http.ListenAndServe(":8080", nil))
+
+	// Specifying our own serve mux
 	http.ListenAndServe(":8080", sm)
 }
